@@ -103,3 +103,6 @@ ENV/
 # reading materials
 papers/
 
+# Mac
+.DS_Store
+
