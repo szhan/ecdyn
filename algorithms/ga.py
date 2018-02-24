@@ -25,6 +25,8 @@ from deap import tools
 A simple genetic algorithm to solve the Griewank problem. The code is adopted from the GA implementation to solve the OneMax problem in DEAP.
 """
 
+random.seed(64)
+
 test_func = benchmarks.griewank
 test_lb = -5
 test_ub = 5
@@ -53,17 +55,15 @@ toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutGaussian, mu=gauss_mu, sigma=gauss_sigma, indpb=ind_pb)
 toolbox.register("select", tools.selTournament, tournsize=tourn_size)
 
-random.seed(64)
-
 pop = toolbox.population(n=n_inds)
 
+# initialize fitness values
 fitnesses = list(map(toolbox.evaluate, pop))
 for ind, fit in zip(pop, fitnesses):
 	ind.fitness.values = fit
-
 fits = [ind.fitness.values[0] for ind in pop]
 
-for g in range(n_gens):
+for g in range(1, n_gens + 1):
 	print("Generation %i" % g)
 	
 	offspring = toolbox.select(pop, len(pop))
