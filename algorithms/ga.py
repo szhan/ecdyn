@@ -13,10 +13,6 @@
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with DEAP. If not, see <http://www.gnu.org/licenses/>.
 
-
-#    example which maximizes the sum of a list of integers
-#    each of which can be 0 or 1
-
 import random
 
 from deap import base
@@ -30,11 +26,11 @@ A simple genetic algorithm to solve the Griewank problem. The code is adopted fr
 """
 
 test_func = benchmarks.griewank
-test_lb = -100
-test_ub = 100
+test_lb = -5
+test_ub = 5
 test_min_goal = 0
 
-n_dims = 100
+n_dims = 2
 n_inds = 300
 n_gens = 100
 
@@ -67,33 +63,35 @@ for ind, fit in zip(pop, fitnesses):
 
 fits = [ind.fitness.values[0] for ind in pop]
 
-g = 0
-while min(fits) > test_min_goal and g < n_gens:
-	g = g + 1
-	print("-- Generation %i --" % g)
-
+for g in range(n_gens):
+	print("Generation %i" % g)
+	
 	offspring = toolbox.select(pop, len(pop))
 	offspring = list(map(toolbox.clone, offspring))
-
+	
 	for child1, child2 in zip(offspring[::2], offspring[1::2]):
 		if random.random() < cx_pb:
 			toolbox.mate(child1, child2)
 			del child1.fitness.values
 			del child2.fitness.values
-
+	
 	for mutant in offspring:
 		if random.random() < mut_pb:
 			toolbox.mutate(mutant)
 			del mutant.fitness.values
-
+	
 	invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 	fitnesses = map(toolbox.evaluate, invalid_ind)
 	for ind, fit in zip(invalid_ind, fitnesses):
 		ind.fitness.values = fit
-
+	
 	pop[:] = offspring
-
+	
 	fits = [ind.fitness.values[0] for ind in pop]
 	
 	# TODO: print or store g, pop, and fitnesses
+	
+	if min(fits) <= test_min_goal:
+		break
+
 
