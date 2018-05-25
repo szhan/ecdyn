@@ -14,6 +14,7 @@
 #    License along with DEAP. If not, see <http://www.gnu.org/licenses/>.
 
 import random
+from operator import itemgetter
 
 from deap import base
 from deap import benchmarks
@@ -22,26 +23,31 @@ from deap import tools
 
 
 """
-A simple genetic algorithm to solve the Griewank problem. The code is adopted from the GA implementation to solve the OneMax problem in DEAP.
+A simple genetic algorithm to solve the Ackley problem. The code is adopted from the GA implementation to solve the OneMax problem in DEAP.
 """
 
 random.seed(64)
 
-test_func = benchmarks.griewank
+
+# specify problem
+n_dims = 3
+test_func = benchmarks.ackley
 test_lb = -5
 test_ub = 5
 test_min_goal = 0
 
-n_dims = 2
-n_inds = 300
-n_gens = 100
+# specify run settings
+n_inds = 5
+n_gens = 10
 
+# specify parameters of GA
 cx_pb = 0.5
 mut_pb = 0.2
 ind_pb = 0.05
 gauss_mu = 0
 gauss_sigma = 5
 tourn_size = 3
+
 
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMin)
@@ -55,13 +61,14 @@ toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutGaussian, mu=gauss_mu, sigma=gauss_sigma, indpb=ind_pb)
 toolbox.register("select", tools.selTournament, tournsize=tourn_size)
 
-pop = toolbox.population(n=n_inds)
 
-# initialize fitness values
+# initialize population
+pop = toolbox.population(n=n_inds)
 fitnesses = list(map(toolbox.evaluate, pop))
 for ind, fit in zip(pop, fitnesses):
 	ind.fitness.values = fit
 fits = [ind.fitness.values[0] for ind in pop]
+
 
 for g in range(1, n_gens + 1):
 	print("Generation %i" % g)
@@ -86,12 +93,15 @@ for g in range(1, n_gens + 1):
 		ind.fitness.values = fit
 	
 	pop[:] = offspring
-	
 	fits = [ind.fitness.values[0] for ind in pop]
 	
-	# TODO: print or store g, pop, and fitnesses
+	# sort individuals by ascending fitness
+	indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
+	individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
 	
 	if min(fits) <= test_min_goal:
 		break
+	
+	print(individuals_sorted_fitness)
 
 
