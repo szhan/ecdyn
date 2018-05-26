@@ -25,8 +25,8 @@ from deap import tools
 
 def run_simple_genetic_algorithm(n_dims, test_func, test_lb, test_ub,\
 				n_inds, n_gens, test_min_goal=0,\
-				cx_pb=0.5, mut_pb=0.2, ind_pb=0.05,\
-				gauss_mu=0, gauss_sigma=5, tourn_size=3,\
+				cx_pb=0.5, mut_pb=0.1, ind_pb=0.05,\
+				gauss_mu=0, gauss_sigma=5, tourn_size=5,\
 				random_seed=12345
 	):
 	"""
