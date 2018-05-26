@@ -59,7 +59,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, test_lb, test_ub,\
 		ind.fitness.values = fit
 	fits = [ind.fitness.values[0] for ind in pop]
 	
-	sorted_fitness = fits.sort()
+	sorted_fitness = sorted(fits)
 	indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
 	individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
 	
@@ -91,7 +91,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, test_lb, test_ub,\
 		fits = [ind.fitness.values[0] for ind in pop]
 		
 		# sort individuals by ascending fitness
-		sorted_fitness = fits.sort()
+		sorted_fitness = sorted(fits)
 		indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
 		individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
 		
