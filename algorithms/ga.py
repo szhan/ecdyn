@@ -66,8 +66,6 @@ def run_simple_genetic_algorithm(n_dims, test_func, test_lb, test_ub,\
 	history.append({'gen':0, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
 	
 	for g in range(1, n_gens + 1):
-		print("Generation %i" % g)
-		
 		offspring = toolbox.select(pop, len(pop))
 		offspring = list(map(toolbox.clone, offspring))
 		
