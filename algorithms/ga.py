@@ -39,6 +39,8 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 		assert len(initial_positions) == n_inds
 		for position in initial_positions:
 			assert len(position) == n_dims
+			assert max(position) <= upper_bound
+			assert min(position) >= lower_bound
 	
 	# set up
 	random.seed(random_seed)
@@ -113,9 +115,10 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 
 
 if __name__ == "__main__":
-	initial_positions = list(itertools.repeat([2.,4.,6.], 5))
-	run_simple_genetic_algorithm(n_dims=3, test_func=benchmarks.rastrigin,\
-					lower_bound=-5.12, upper_bound=5.12, n_inds=5, n_gens=10,\
-					initial_positions=initial_positions)
+	initial_positions = list(itertools.repeat([2.0, -4.0, 6.0], 5))
+	results = run_simple_genetic_algorithm(n_dims=3, test_func=benchmarks.rastrigin,\
+						lower_bound=-5.12, upper_bound=5.12, n_inds=5, n_gens=1000,\
+						initial_positions=initial_positions)
+	print results[len(results)-1]
 
 
