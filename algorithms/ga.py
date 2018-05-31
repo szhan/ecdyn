@@ -115,9 +115,12 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 
 
 if __name__ == "__main__":
-	initial_positions = list(itertools.repeat([2.0, -4.0, 6.0], 5))
+	n_inds = 100
+	n_gens = 10000
+
+	initial_positions = list(itertools.repeat([2.0, -4.0, 5.0], n_inds))
 	results = run_simple_genetic_algorithm(n_dims=3, test_func=benchmarks.rastrigin,\
-						lower_bound=-5.12, upper_bound=5.12, n_inds=5, n_gens=1000,\
+						lower_bound=-5.12, upper_bound=5.12, n_inds=n_inds, n_gens=n_gens,\
 						initial_positions=initial_positions)
 	print results[len(results)-1]
 
