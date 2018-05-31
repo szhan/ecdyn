@@ -23,7 +23,7 @@ from deap import creator
 from deap import tools
 
 
-def run_simple_genetic_algorithm(n_dims, test_func, init_lb, init_ub,\
+def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound,\
 				n_inds, n_gens, test_min_goal=0,\
 				cx_pb=0.5, mut_pb=0.1, ind_pb=0.05,\
 				gauss_mu=0, gauss_sigma=5, tourn_size=5,\
@@ -41,7 +41,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, init_lb, init_ub,\
 	creator.create("Individual", list, fitness=creator.FitnessMin)
 	
 	toolbox = base.Toolbox()
-	toolbox.register("attr_float_uniform", random.uniform, init_lb, init_ub)
+	toolbox.register("attr_float_uniform", random.uniform, lower_bound, upper_bound)
 	toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_float_uniform, n_dims)
 	toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 	toolbox.register("evaluate", test_func)
@@ -103,6 +103,6 @@ def run_simple_genetic_algorithm(n_dims, test_func, init_lb, init_ub,\
 
 if __name__ == "__main__":
 	run_simple_genetic_algorithm(n_dims=3, test_func=benchmarks.rastrigin,\
-					init_lb=-5.12, init_ub=5.12, n_inds=5, n_gens=10)
+					lower_bound=-5.12, upper_bound=5.12, n_inds=5, n_gens=10)
 
 
