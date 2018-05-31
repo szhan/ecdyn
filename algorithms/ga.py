@@ -13,6 +13,7 @@
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with DEAP. If not, see <http://www.gnu.org/licenses/>.
 
+import itertools
 import random
 from operator import itemgetter
 from collections import OrderedDict
@@ -23,8 +24,8 @@ from deap import creator
 from deap import tools
 
 
-def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound,\
-				n_inds, n_gens, test_min_goal=0,\
+def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,\
+				initial_positions=None, test_min_goal=0,\
 				cx_pb=0.5, mut_pb=0.1, ind_pb=0.05,\
 				gauss_mu=0, gauss_sigma=5, tourn_size=5,\
 				random_seed=12345
@@ -34,6 +35,11 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound,\
 	The code is adopted from the GA implementation to solve the OneMax problem in DEAP.
 	"""
 	
+	if initial_positions is not None:
+		assert len(initial_positions) == n_inds
+		for position in initial_positions:
+			assert len(position) == n_dims
+	
 	# set up
 	random.seed(random_seed)
 	
@@ -41,9 +47,6 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound,\
 	creator.create("Individual", list, fitness=creator.FitnessMin)
 	
 	toolbox = base.Toolbox()
-	toolbox.register("attr_float_uniform", random.uniform, lower_bound, upper_bound)
-	toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_float_uniform, n_dims)
-	toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 	toolbox.register("evaluate", test_func)
 	toolbox.register("mate", tools.cxTwoPoint)
 	toolbox.register("mutate", tools.mutGaussian, mu=gauss_mu, sigma=gauss_sigma, indpb=ind_pb)
@@ -53,7 +56,15 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound,\
 	history = list()	# list of dictionaries
 	
 	# initialize population
-	pop = toolbox.population(n=n_inds)
+	pop = list()
+	if initial_positions is not None:
+		for i in range(n_inds):
+			pop.append(creator.Individual(initial_positions[i]))
+	else:
+		for i in range(n_inds):
+			random_position = [random.uniform(lower_bound, upper_bound) for _ in range(n_inds)]
+			pop.append(creator.Individual(random_position))
+	
 	fitnesses = list(map(toolbox.evaluate, pop))
 	for ind, fit in zip(pop, fitnesses):
 		ind.fitness.values = fit
@@ -102,7 +113,9 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound,\
 
 
 if __name__ == "__main__":
+	initial_positions = list(itertools.repeat([2.,4.,6.], 5))
 	run_simple_genetic_algorithm(n_dims=3, test_func=benchmarks.rastrigin,\
-					lower_bound=-5.12, upper_bound=5.12, n_inds=5, n_gens=10)
+					lower_bound=-5.12, upper_bound=5.12, n_inds=5, n_gens=10,\
+					initial_positions=initial_positions)
 
 
