@@ -103,6 +103,10 @@ ENV/
 # reading materials
 papers/
 
+# working files
+notebooks/
+results/
+
 # Mac
 .DS_Store
 
