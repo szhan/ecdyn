@@ -122,6 +122,7 @@ if __name__ == "__main__":
 	results = run_simple_genetic_algorithm(n_dims=3, test_func=benchmarks.rastrigin,\
 						lower_bound=-5.12, upper_bound=5.12, n_inds=n_inds, n_gens=n_gens,\
 						initial_positions=initial_positions)
-	print results[len(results)-1]
+	best_fitness = min(results[-1]['fitness'])
+	print 'Best solution has a fitness of {}'.format(best_fitness)
 
 
