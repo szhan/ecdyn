@@ -119,7 +119,9 @@ if __name__ == '__main__':
     initial_positions = list(itertools.repeat([2.0, -4.0, 5.0], n_inds))
 
     results = harmony_search(obj_fun, num_processes=1, num_iterations=1, initial_harmonies=initial_positions)
+    best_solution = results.best_harmony
+    best_fitness = results.best_fitness
 
-    print 'Best harmony: {}\nBest fitness: {}'.format(results.best_harmony, results.best_fitness)
+    print 'Best solution: {}\nBest fitness: {}'.format(best_solution, best_fitness)
 
 
