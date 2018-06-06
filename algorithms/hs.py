@@ -103,25 +103,35 @@ class ObjectiveFunction(ObjectiveFunctionInterface):
     def maximize(self):
         return self._maximize
 
+
+def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,\
+			initial_positions=None, random_seed=12345):
+	obj_fun = ObjectiveFunction(n_dims=n_dims, obj_func=test_func,\
+					lower_bound=lower_bound, upper_bound=upper_bound,\
+					n_inds=n_inds, n_gens=n_gens)
+	return harmony_search(obj_fun, num_processes=1, num_iterations=1,\
+				initial_harmonies=initial_positions)
+
+
 if __name__ == '__main__':
-    n_inds = 100
-    n_gens = 10000
+	n_inds = 100
+	n_gens = 10000
 
-    n_dims = 3
-    lower_bound = -5.12
-    upper_bound = 5.12
-    test_func = benchmarks.rastrigin	# from DEAP, which returns a tuple
+	n_dims = 3
+	lower_bound = -5.12
+	upper_bound = 5.12
+	test_func = benchmarks.rastrigin	# from DEAP, which returns a tuple
 
-    obj_fun = ObjectiveFunction(n_dims=n_dims, obj_func=test_func,\
-                                lower_bound=lower_bound, upper_bound=upper_bound,\
-                                n_inds=n_inds, n_gens=n_gens)
+	initial_positions = list(itertools.repeat([2.0, -4.0, 5.0], n_inds))
 
-    initial_positions = list(itertools.repeat([2.0, -4.0, 5.0], n_inds))
+	results = run_harmony_search(n_dims=n_dims, test_func=test_func,\
+					lower_bound=lower_bound, upper_bound=upper_bound,\
+					n_inds=n_inds, n_gens=n_gens,\
+					initial_positions=initial_positions)
 
-    results = harmony_search(obj_fun, num_processes=1, num_iterations=1, initial_harmonies=initial_positions)
-    best_solution = results.best_harmony
-    best_fitness = results.best_fitness
+	best_solution = results.best_harmony
+	best_fitness = results.best_fitness
 
-    print 'Best solution: {}\nBest fitness: {}'.format(best_solution, best_fitness)
+	print 'Best solution: {}\nBest fitness: {}'.format(best_solution, best_fitness)
 
 
