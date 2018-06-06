@@ -120,6 +120,6 @@ if __name__ == '__main__':
 
     results = harmony_search(obj_fun, num_processes=1, num_iterations=1, initial_harmonies=initial_positions)
 
-    print('Elapsed time: {}\nBest harmony: {}\nBest fitness: {}'.format(results.elapsed_time, results.best_harmony, results.best_fitness))
+    print 'Best harmony: {}\nBest fitness: {}'.format(results.best_harmony, results.best_fitness)
 
 
