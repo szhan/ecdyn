@@ -129,8 +129,15 @@ if __name__ == "__main__":
 						lower_bound=lower_bound, upper_bound=upper_bound,\
 						n_inds=n_inds, n_gens=n_gens,\
 						initial_positions=initial_positions)
-	best_fitness = min(results[-1]['fitness'])
 
-	print 'Best solution has a fitness of {}'.format(best_fitness)
+	best_solution = None
+	best_fitness = None
+	for i in range(n_inds):
+		if best_solution is None or\
+			results[-1]['fitness'][i] < best_fitness:
+			best_solution = results[-1]['individuals'][i]
+			best_fitness = results[-1]['fitness'][i]
+
+	print 'Best solution: {}\nBest fitness: {}'.format(best_solution, best_fitness)
 
 
