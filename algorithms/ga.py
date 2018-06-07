@@ -25,7 +25,7 @@ from deap import tools
 
 
 def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,\
-				initial_positions=None, test_min_goal=0,\
+				initial_positions=None,\
 				cx_pb=0.5, mut_pb=0.1, ind_pb=0.05,\
 				gauss_mu=0, gauss_sigma=5, tourn_size=5,\
 				random_seed=12345
@@ -107,10 +107,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 		individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
 		
 		history.append({'gen':g, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
-		
-		if min(fits) <= test_min_goal:
-			break
-	
+
 	return history
 
 
