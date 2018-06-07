@@ -36,8 +36,8 @@ class ObjectiveFunction(ObjectiveFunctionInterface):
     def __init__(self, n_dims, obj_func, lower_bound, upper_bound,\
                  n_inds, n_gens, random_seed=12345):
         self._n_dims = n_dims
-        self._lower_bounds = [lower_bound] * self._n_dims
-        self._upper_bounds = [upper_bound] * self._n_dims
+        self._lower_bounds = [float(lower_bound)] * self._n_dims
+        self._upper_bounds = [float(upper_bound)] * self._n_dims
         self._variable = [True] * self._n_dims
         self._obj_func = obj_func
         self._random_seed = random_seed
@@ -108,7 +108,7 @@ def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_ge
 			initial_positions=None, random_seed=12345):
 	obj_fun = ObjectiveFunction(n_dims=n_dims, obj_func=test_func,\
 					lower_bound=lower_bound, upper_bound=upper_bound,\
-					n_inds=n_inds, n_gens=n_gens)
+					n_inds=n_inds, n_gens=n_gens, random_seed=random_seed)
 	return harmony_search(obj_fun, num_processes=1, num_iterations=1,\
 				initial_harmonies=initial_positions)
 
@@ -117,12 +117,12 @@ if __name__ == '__main__':
 	n_inds = 100
 	n_gens = 10000
 
-	n_dims = 3
+	n_dims = 10
 	lower_bound = -5.12
 	upper_bound = 5.12
 	test_func = benchmarks.rastrigin	# from DEAP, which returns a tuple
 
-	initial_positions = list(itertools.repeat([2.0, -4.0, 5.0], n_inds))
+        initial_positions = [[random.uniform(lower_bound, upper_bound) for _ in range(n_dims)] for _ in range(n_inds)]
 
 	results = run_harmony_search(n_dims=n_dims, test_func=test_func,\
 					lower_bound=lower_bound, upper_bound=upper_bound,\

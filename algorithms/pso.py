@@ -10,6 +10,8 @@ def run_global_best_pso(n_dims, test_func, n_inds, n_gens,\
 			c1=0.5, c2=0.3, w=0.9,\
 			random_seed=12345
 	):
+	np.random_seed(random_seed)
+
 	options = {'c1':c1, 'c2':c2, 'w':w}
 
 	optimizer = ps.single.GlobalBestPSO(n_particles=n_inds, dimensions=n_dims, options=options)
