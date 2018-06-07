@@ -119,7 +119,7 @@ if __name__ == "__main__":
 	upper_bound = 5.12
 	test_func = benchmarks.rastrigin
 
-	initial_positions = list(itertools.repeat([2.0, -4.0, 5.0], n_inds))
+	initial_positions = [[random.uniform(lower_bound, upper_bound) for _ in range(n_dims)] for _ in range(n_inds)]
 
 	results = run_simple_genetic_algorithm(n_dims=n_dims, test_func=test_func,\
 						lower_bound=lower_bound, upper_bound=upper_bound,\
