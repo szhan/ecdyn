@@ -32,84 +32,84 @@ from deap import benchmarks
 
 
 class ObjectiveFunction(ObjectiveFunctionInterface):
+	def __init__(self, n_dims, obj_func, lower_bound, upper_bound,
+			n_inds, n_gens, random_seed=12345):
+		self._n_dims = n_dims
+		self._lower_bounds = [float(lower_bound)] * self._n_dims
+		self._upper_bounds = [float(upper_bound)] * self._n_dims
+		self._variable = [True] * self._n_dims
+		self._obj_func = obj_func
+		self._random_seed = random_seed
 
-    def __init__(self, n_dims, obj_func, lower_bound, upper_bound,\
-                 n_inds, n_gens, random_seed=12345):
-        self._n_dims = n_dims
-        self._lower_bounds = [float(lower_bound)] * self._n_dims
-        self._upper_bounds = [float(upper_bound)] * self._n_dims
-        self._variable = [True] * self._n_dims
-        self._obj_func = obj_func
-        self._random_seed = random_seed
+		# define all input parameters
+		self._maximize = False  # do we maximize or minimize?
+		self._max_imp = n_inds * n_gens  # number of evaluations
+		self._hms = n_inds  # harmony memory size
+		self._hmcr = 0.75  # harmony memory considering rate
+		self._par = 0.5  # pitch adjusting rate
+		self._mpap = 0.25  # maximum pitch adjustment proportion (new parameter defined in pitch_adjustment()) - used for continuous variables only
+		self._mpai = 2  # maximum pitch adjustment index (also defined in pitch_adjustment()) - used for discrete variables only
 
-        # define all input parameters
-        self._maximize = False  # do we maximize or minimize?
-        self._max_imp = n_inds * n_gens  # number of evaluations
-        self._hms = n_inds  # harmony memory size
-        self._hmcr = 0.75  # harmony memory considering rate
-        self._par = 0.5  # pitch adjusting rate
-        self._mpap = 0.25  # maximum pitch adjustment proportion (new parameter defined in pitch_adjustment()) - used for continuous variables only
-        self._mpai = 2  # maximum pitch adjustment index (also defined in pitch_adjustment()) - used for discrete variables only
+	def get_fitness(self, vector):
+		return self._obj_func(vector)[0]
 
-    def get_fitness(self, vector):
-        return self._obj_func(vector)[0]
+	def get_value(self, i, index=None):
+		""" Values are returned uniformly at random in their entire range. Since both parameters are continuous, index can be ignored. """
+		return random.uniform(self._lower_bounds[i], self._upper_bounds[i])
 
-    def get_value(self, i, index=None):
-        """
-            Values are returned uniformly at random in their entire range. Since both parameters are continuous, index can be ignored.
-        """
-        return random.uniform(self._lower_bounds[i], self._upper_bounds[i])
+	def get_lower_bound(self, i):
+		return self._lower_bounds[i]
 
-    def get_lower_bound(self, i):
-        return self._lower_bounds[i]
+	def get_upper_bound(self, i):
+		return self._upper_bounds[i]
 
-    def get_upper_bound(self, i):
-        return self._upper_bounds[i]
+	def is_variable(self, i):
+		return self._variable[i]
 
-    def is_variable(self, i):
-        return self._variable[i]
+	def is_discrete(self, i):
+		# all variables are continuous
+		return False
 
-    def is_discrete(self, i):
-        # all variables are continuous
-        return False
+	def get_num_parameters(self):
+		return len(self._lower_bounds)
 
-    def get_num_parameters(self):
-        return len(self._lower_bounds)
+	def use_random_seed(self):
+		return hasattr(self, '_random_seed') and self._random_seed
 
-    def use_random_seed(self):
-        return hasattr(self, '_random_seed') and self._random_seed
+	def get_random_seed(self):
+		return self._random_seed
 
-    def get_random_seed(self):
-        return self._random_seed
+	def get_max_imp(self):
+		return self._max_imp
 
-    def get_max_imp(self):
-        return self._max_imp
+	def get_hmcr(self):
+		return self._hmcr
 
-    def get_hmcr(self):
-        return self._hmcr
+	def get_par(self):
+		return self._par
 
-    def get_par(self):
-        return self._par
+	def get_hms(self):
+		return self._hms
 
-    def get_hms(self):
-        return self._hms
+	def get_mpai(self):
+		return self._mpai
 
-    def get_mpai(self):
-        return self._mpai
+	def get_mpap(self):
+		return self._mpap
 
-    def get_mpap(self):
-        return self._mpap
-
-    def maximize(self):
-        return self._maximize
+	def maximize(self):
+		return self._maximize
 
 
-def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,\
+def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,
 			initial_positions=None, random_seed=12345):
-	obj_fun = ObjectiveFunction(n_dims=n_dims, obj_func=test_func,\
-					lower_bound=lower_bound, upper_bound=upper_bound,\
-					n_inds=n_inds, n_gens=n_gens, random_seed=random_seed)
-	return harmony_search(obj_fun, num_processes=1, num_iterations=1,\
+	obj_fun = ObjectiveFunction(n_dims=n_dims, obj_func=test_func,
+					lower_bound=lower_bound, upper_bound=upper_bound,
+					n_inds=n_inds, n_gens=n_gens,
+					random_seed=random_seed)
+
+	return harmony_search(obj_fun,
+				num_processes=1, num_iterations=1,
 				initial_harmonies=initial_positions)
 
 
