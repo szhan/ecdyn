@@ -24,39 +24,38 @@ from deap import creator
 from deap import tools
 
 
-def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,\
-				initial_positions=None,\
-				cx_pb=0.5, mut_pb=0.1, ind_pb=0.05,\
-				gauss_mu=0, gauss_sigma=5, tourn_size=5,\
-				random_seed=12345
+def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,
+				initial_positions=None, random_seed=12345,
+				cx_pb=0.5, mut_pb=0.1, ind_pb=0.05,
+				gauss_mu=0, gauss_sigma=5, tourn_size=5
 	):
 	"""
 	A simple genetic algorithm to solve a minimization problem.
 	The code is adopted from the GA implementation to solve the OneMax problem in DEAP.
 	"""
-	
+
 	if initial_positions is not None:
 		assert len(initial_positions) == n_inds
 		for position in initial_positions:
 			assert len(position) == n_dims
 			assert max(position) <= upper_bound
 			assert min(position) >= lower_bound
-	
+
 	# set up
 	random.seed(random_seed)
-	
+
 	creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 	creator.create("Individual", list, fitness=creator.FitnessMin)
-	
+
 	toolbox = base.Toolbox()
 	toolbox.register("evaluate", test_func)
 	toolbox.register("mate", tools.cxTwoPoint)
 	toolbox.register("mutate", tools.mutGaussian, mu=gauss_mu, sigma=gauss_sigma, indpb=ind_pb)
 	toolbox.register("select", tools.selTournament, tournsize=tourn_size)
-	
+
 	# record individuals, sorted by fitness, across generations
 	history = list()	# list of dictionaries
-	
+
 	# initialize population
 	pop = list()
 	if initial_positions is not None:
@@ -66,46 +65,46 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 		for i in range(n_inds):
 			random_position = [random.uniform(lower_bound, upper_bound) for _ in range(n_inds)]
 			pop.append(creator.Individual(random_position))
-	
+
 	fitnesses = list(map(toolbox.evaluate, pop))
 	for ind, fit in zip(pop, fitnesses):
 		ind.fitness.values = fit
 	fits = [ind.fitness.values[0] for ind in pop]
-	
+
 	sorted_fitness = sorted(fits)
 	indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
 	individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
-	
+
 	history.append({'gen':0, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
-	
+
 	for g in range(1, n_gens + 1):
 		offspring = toolbox.select(pop, len(pop))
 		offspring = list(map(toolbox.clone, offspring))
-		
+
 		for child1, child2 in zip(offspring[::2], offspring[1::2]):
 			if random.random() < cx_pb:
 				toolbox.mate(child1, child2)
 				del child1.fitness.values
 				del child2.fitness.values
-		
+
 		for mutant in offspring:
 			if random.random() < mut_pb:
 				toolbox.mutate(mutant)
 				del mutant.fitness.values
-		
+
 		invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 		fitnesses = map(toolbox.evaluate, invalid_ind)
 		for ind, fit in zip(invalid_ind, fitnesses):
 			ind.fitness.values = fit
-		
+
 		pop[:] = offspring
 		fits = [ind.fitness.values[0] for ind in pop]
-		
+
 		# sort individuals by ascending fitness
 		sorted_fitness = sorted(fits)
 		indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
 		individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
-		
+
 		history.append({'gen':g, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
 
 	return history
