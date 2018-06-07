@@ -1,16 +1,15 @@
-import itertools
+import random
 
 import numpy as np
 import pyswarms as ps
 from pyswarms.utils.functions import single_obj as fx
 
 
-def run_global_best_pso(n_dims, test_func, n_inds, n_gens,\
-			initial_positions=None,\
-			c1=0.5, c2=0.3, w=0.9,\
-			random_seed=12345
+def run_global_best_pso(n_dims, test_func, n_inds, n_gens,
+			initial_positions=None, random_seed=12345,
+			c1=0.5, c2=0.3, w=0.9
 	):
-	np.random_seed(random_seed)
+	np.random.seed(random_seed)
 
 	options = {'c1':c1, 'c2':c2, 'w':w}
 
@@ -36,8 +35,8 @@ if __name__ == "__main__":
 
 	initial_positions = [[random.uniform(lower_bound, upper_bound) for _ in range(n_dims)] for _ in range(n_inds)]
 
-	results = run_global_best_pso(n_dims=n_dims, test_func=test_func,\
-					n_inds=n_inds, n_gens=n_gens,\
+	results = run_global_best_pso(n_dims=n_dims, test_func=test_func,
+					n_inds=n_inds, n_gens=n_gens,
 					initial_positions=initial_positions)
 
 
