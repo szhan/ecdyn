@@ -23,8 +23,6 @@
     THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import itertools
-from math import pow
 import random
 
 from pyharmonysearch import ObjectiveFunctionInterface, harmony_search
