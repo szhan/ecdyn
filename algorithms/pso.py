@@ -10,6 +10,8 @@ def run_global_best_pso(n_dims, test_func, n_inds, n_gens, lower_bound, upper_bo
 			c1=0.5, c2=0.3, w=0.9
 	):
 	# check input
+	assert lower_bound < upper_bound, "Lower bound must be smaller than upper bound."
+
 	if initial_positions is not None:
 		assert len(initial_positions) == n_inds
 		for position in initial_positions:

@@ -28,6 +28,8 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 				gauss_mu=0, gauss_sigma=5, tourn_size=5
 	):
 	# check input
+	assert lower_bound < upper_bound, "Lower bound must be smaller than upper bound."
+
 	if initial_positions is not None:
 		assert len(initial_positions) == n_inds
 		for position in initial_positions:

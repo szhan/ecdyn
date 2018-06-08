@@ -47,6 +47,7 @@ def run_es_mu_plus_lambda(n_dims, test_func, lower_bound, upper_bound, n_inds, n
 	"""
 
 	# check input
+	assert lower_bound < upper_bound, "Lower bound must be smaller than upper bound."
 	assert (cxpb + mutpb) <= 1.0, "The sum of the crossover and mutation probabilities must be <= 1.0."
 
 	if initial_positions is not None:

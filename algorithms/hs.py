@@ -101,6 +101,8 @@ class ObjectiveFunction(ObjectiveFunctionInterface):
 def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,
 			initial_positions=None, random_seed=12345):
 	# check input
+	assert lower_bound < upper_bound, "Lower bound must be smaller than upper bound."
+
 	if initial_positions is not None:
 		assert len(initial_positions) == n_inds
 		for position in initial_positions:
