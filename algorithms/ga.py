@@ -34,6 +34,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 	The code is adopted from the GA implementation to solve the OneMax problem in DEAP.
 	"""
 
+	# check input
 	if initial_positions is not None:
 		assert len(initial_positions) == n_inds
 		for position in initial_positions:
@@ -121,9 +122,9 @@ if __name__ == "__main__":
 
 	initial_positions = [[random.uniform(lower_bound, upper_bound) for _ in range(n_dims)] for _ in range(n_inds)]
 
-	results = run_simple_genetic_algorithm(n_dims=n_dims, test_func=test_func,\
-						lower_bound=lower_bound, upper_bound=upper_bound,\
-						n_inds=n_inds, n_gens=n_gens,\
+	results = run_simple_genetic_algorithm(n_dims=n_dims, test_func=test_func,
+						lower_bound=lower_bound, upper_bound=upper_bound,
+						n_inds=n_inds, n_gens=n_gens,
 						initial_positions=initial_positions)
 
 	best_solution = None
