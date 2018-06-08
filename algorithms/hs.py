@@ -111,7 +111,7 @@ def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_ge
 				initial_harmonies=initial_positions)
 
 	history = list()
-	for g in range(n_gens):
+	for g in range(n_gens + 1):
 		solutions = list()
 		fitnesses = list()
 		for i in range(n_inds):
@@ -137,6 +137,8 @@ if __name__ == '__main__':
 					lower_bound=lower_bound, upper_bound=upper_bound,
 					n_inds=n_inds, n_gens=n_gens,
 					initial_positions=initial_positions)
+
+	assert len(results) == n_gens + 1
 
 	best_solution = None
 	best_fitness = None
