@@ -73,7 +73,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 
 	sorted_fitness = sorted(fits)
 	indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
-	individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
+	individuals_sorted_fitness = [pop[indices_sorted_fitness[i]] for i in range(len(indices_sorted_fitness))]
 
 	history.append({'gen':0, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
 
@@ -93,7 +93,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 				del mutant.fitness.values
 
 		invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-		fitnesses = map(toolbox.evaluate, invalid_ind)
+		fitnesses = list(map(toolbox.evaluate, invalid_ind))
 		for ind, fit in zip(invalid_ind, fitnesses):
 			ind.fitness.values = fit
 
@@ -103,7 +103,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 		# sort individuals by ascending fitness
 		sorted_fitness = sorted(fits)
 		indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
-		individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
+		individuals_sorted_fitness = [pop[indices_sorted_fitness[i]] for i in range(len(indices_sorted_fitness))]
 
 		history.append({'gen':g, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
 
