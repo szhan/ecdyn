@@ -13,10 +13,8 @@
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with DEAP. If not, see <http://www.gnu.org/licenses/>.
 
-import itertools
 import random
 from operator import itemgetter
-from collections import OrderedDict
 
 from deap import base
 from deap import benchmarks
@@ -29,11 +27,6 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 				cx_pb=0.5, mut_pb=0.1, ind_pb=0.05,
 				gauss_mu=0, gauss_sigma=5, tourn_size=5
 	):
-	"""
-	A simple genetic algorithm to solve a minimization problem.
-	The code is adopted from the GA implementation to solve the OneMax problem in DEAP.
-	"""
-
 	# check input
 	if initial_positions is not None:
 		assert len(initial_positions) == n_inds
@@ -76,9 +69,9 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 	indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
 	individuals_sorted_fitness = [pop[indices_sorted_fitness[i]] for i in range(len(indices_sorted_fitness))]
 
-	history.append({'gen':0, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
+	history.append({'gen': 0, 'individuals': individuals_sorted_fitness, 'fitness': sorted_fitness})	
 
-	for g in range(1, n_gens + 1):
+	for g in range(n_gens):
 		offspring = toolbox.select(pop, len(pop))
 		offspring = list(map(toolbox.clone, offspring))
 
@@ -106,7 +99,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 		indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
 		individuals_sorted_fitness = [pop[indices_sorted_fitness[i]] for i in range(len(indices_sorted_fitness))]
 
-		history.append({'gen':g, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})	
+		history.append({'gen': g+1, 'individuals': individuals_sorted_fitness, 'fitness': sorted_fitness})	
 
 	return history
 
@@ -124,16 +117,15 @@ if __name__ == "__main__":
 
 	results = run_simple_genetic_algorithm(n_dims=n_dims, test_func=test_func,
 						lower_bound=lower_bound, upper_bound=upper_bound,
-						n_inds=n_inds, n_gens=n_gens)
-						#initial_positions=initial_positions)
+						n_inds=n_inds, n_gens=n_gens,
+						initial_positions=initial_positions)
 
 	assert len(results) == n_gens + 1
 
 	best_solution = None
 	best_fitness = None
 	for i in range(n_inds):
-		if best_solution is None or\
-			results[-1]['fitness'][i] < best_fitness:
+		if best_solution is None or results[-1]['fitness'][i] < best_fitness:
 			best_solution = results[-1]['individuals'][i]
 			best_fitness = results[-1]['fitness'][i]
 
