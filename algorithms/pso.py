@@ -48,7 +48,7 @@ if __name__ == "__main__":
 	n_inds = 100
 	n_gens = 10000
 
-	n_dims = 8
+	n_dims = 3
 	lower_bound = -5.12
 	upper_bound = 5.12
 	test_func = fx.rastrigin_func
