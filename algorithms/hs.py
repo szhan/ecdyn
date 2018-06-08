@@ -54,7 +54,6 @@ class ObjectiveFunction(ObjectiveFunctionInterface):
 		return self._obj_func(vector)[0]
 
 	def get_value(self, i, index=None):
-		""" Values are returned uniformly at random in their entire range. Since both parameters are continuous, index can be ignored. """
 		return random.uniform(self._lower_bounds[i], self._upper_bounds[i])
 
 	def get_lower_bound(self, i):
@@ -108,29 +107,43 @@ def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_ge
 					n_inds=n_inds, n_gens=n_gens,
 					random_seed=random_seed)
 
-	return harmony_search(obj_fun,
-				num_processes=1, num_iterations=1,
+	result = harmony_search(obj_fun, num_processes=1, num_iterations=1,
 				initial_harmonies=initial_positions)
+
+	history = list()
+	for g in range(n_gens):
+		solutions = list()
+		fitnesses = list()
+		for i in range(n_inds):
+			solutions.append(result.harmony_histories[0][g]['harmonies'][i][0])
+			fitnesses.append(result.harmony_histories[0][g]['harmonies'][i][1])
+		history.append({'gen': g, 'individuals': solutions, 'fitness': fitnesses})
+
+	return history
 
 
 if __name__ == '__main__':
-	n_inds = 100
-	n_gens = 10000
+	n_inds = 5
+	n_gens = 100
 
-	n_dims = 10
+	n_dims = 2
 	lower_bound = -5.12
 	upper_bound = 5.12
 	test_func = benchmarks.rastrigin	# from DEAP, which returns a tuple
 
         initial_positions = [[random.uniform(lower_bound, upper_bound) for _ in range(n_dims)] for _ in range(n_inds)]
 
-	results = run_harmony_search(n_dims=n_dims, test_func=test_func,\
-					lower_bound=lower_bound, upper_bound=upper_bound,\
-					n_inds=n_inds, n_gens=n_gens,\
+	results = run_harmony_search(n_dims=n_dims, test_func=test_func,
+					lower_bound=lower_bound, upper_bound=upper_bound,
+					n_inds=n_inds, n_gens=n_gens,
 					initial_positions=initial_positions)
 
-	best_solution = results.best_harmony
-	best_fitness = results.best_fitness
+	best_solution = None
+	best_fitness = None
+	for i in range(n_inds):
+		if best_solution is None or results[-1]['fitness'][i] < best_fitness:
+			best_solution = results[-1]['individuals'][i]
+			best_fitness = results[-1]['fitness'][i]
 
 	print 'Best solution: {}\nBest fitness: {}'.format(best_solution, best_fitness)
 
