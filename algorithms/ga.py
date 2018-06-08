@@ -64,7 +64,7 @@ def run_simple_genetic_algorithm(n_dims, test_func, lower_bound, upper_bound, n_
 			pop.append(creator.Individual(initial_positions[i]))
 	else:
 		for i in range(n_inds):
-			random_position = [random.uniform(lower_bound, upper_bound) for _ in range(n_inds)]
+			random_position = [random.uniform(lower_bound, upper_bound) for _ in range(n_dims)]
 			pop.append(creator.Individual(random_position))
 
 	fitnesses = list(map(toolbox.evaluate, pop))
@@ -124,8 +124,8 @@ if __name__ == "__main__":
 
 	results = run_simple_genetic_algorithm(n_dims=n_dims, test_func=test_func,
 						lower_bound=lower_bound, upper_bound=upper_bound,
-						n_inds=n_inds, n_gens=n_gens,
-						initial_positions=initial_positions)
+						n_inds=n_inds, n_gens=n_gens)
+						#initial_positions=initial_positions)
 
 	best_solution = None
 	best_fitness = None
