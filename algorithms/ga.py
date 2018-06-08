@@ -116,6 +116,7 @@ if __name__ == "__main__":
 	test_func = benchmarks.rastrigin
 
 	initial_positions = [[random.uniform(lower_bound, upper_bound) for _ in range(n_dims)] for _ in range(n_inds)]
+	print 'Initial solution: {}'.format(initial_positions)
 
 	results = run_simple_genetic_algorithm(n_dims=n_dims, test_func=test_func,
 						lower_bound=lower_bound, upper_bound=upper_bound,
