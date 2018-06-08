@@ -20,16 +20,23 @@ def run_global_best_pso(n_dims, test_func, n_inds, n_gens, lower_bound, upper_bo
 
 	stats = optimizer.optimize(test_func, iters=n_gens)
 	pos_history = optimizer.get_pos_history
-	cost_history = optimizer.get_cost_history
 
-	return(pos_history)
+	history = list()
+	for g in range(n_gens):
+		solutions = list()
+		#fitnesses = list()	# TODO
+		for i in range(n_inds):
+			solutions.append(pos_history[g][i].tolist())	# convert from np.array to list
+		history.append( {'gen': g, 'individuals': solutions} )
+
+	return history
 
 
 if __name__ == "__main__":
 	n_inds = 100
 	n_gens = 10000
 
-	n_dims = 3
+	n_dims = 8
 	lower_bound = -5.12
 	upper_bound = 5.12
 	test_func = fx.rastrigin_func
