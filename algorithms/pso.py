@@ -49,4 +49,6 @@ if __name__ == "__main__":
 					lower_bound=lower_bound, upper_bound=upper_bound,
 					initial_positions=initial_positions)
 
+	assert len(results) == n_gens + 1
+
 

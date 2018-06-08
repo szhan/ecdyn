@@ -172,6 +172,8 @@ if __name__ == "__main__":
 					n_inds=n_inds, n_gens=n_gens,
 					initial_positions=initial_positions)
 
+	assert len(results) == n_gens + 1
+
 	best_solution = None
 	best_fitness = None
 	for i in range(n_inds):
