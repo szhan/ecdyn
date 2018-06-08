@@ -148,8 +148,8 @@ def run_es_mu_plus_lambda(n_dims, test_func, lower_bound, upper_bound, n_inds, n
 
 
 if __name__ == "__main__":
-	n_inds = 10
-	n_gens = 1000
+	n_inds = 100
+	n_gens = 10000
 
 	n_dims = 3
 	lower_bound = -5.12
