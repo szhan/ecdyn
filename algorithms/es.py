@@ -49,29 +49,30 @@ def run_es_mu_plus_lambda(n_dims, test_func, lower_bound, upper_bound, n_inds, n
 
 	assert (cxpb + mutpb) <= 1.0, ("The sum of the crossover and mutation probabilities must be <= 1.0.")
 
+	# set up
 	random.seed(random_seed)
 
-	# apply mutation and crossover
 	def varOr(population, toolbox, lambda_, cxpb, mutpb):
+		""" Apply crossover and mutation to population of solutions. """
 		offspring = []
 		for _ in xrange(lambda_):
 			op_choice = random.random()
-			if op_choice < cxpb:		# Apply crossover
+			if op_choice < cxpb:		# Crossover
 				ind1, ind2 = map(toolbox.clone, random.sample(population, 2))
 				ind1, ind2 = toolbox.mate(ind1, ind2)
 				del ind1.fitness.values
 				offspring.append(ind1)
-			elif op_choice < cxpb + mutpb:	# Apply mutation
+			elif op_choice < cxpb + mutpb:	# Mutation
 				ind = toolbox.clone(random.choice(population))
 				ind, = toolbox.mutate(ind)
 				del ind.fitness.values
 				offspring.append(ind)
-			else:				# Apply reproduction
+			else:				# Reproduction
 				offspring.append(random.choice(population))
 		return offspring
 
-	# checks that strategy meets a minimum, otherwise not enough exploration
 	def checkStrategy(minstrategy):
+		""" Check that strategy meets a minimum, otherwise not enough exploration. """
 		def decorator(func):
 			def wrapper(*args, **kargs):
 				children = func(*args, **kargs)
