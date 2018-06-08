@@ -9,6 +9,15 @@ def run_global_best_pso(n_dims, test_func, n_inds, n_gens, lower_bound, upper_bo
 			initial_positions=None, random_seed=12345,
 			c1=0.5, c2=0.3, w=0.9
 	):
+	# check input
+	if initial_positions is not None:
+		assert len(initial_positions) == n_inds
+		for position in initial_positions:
+			assert len(position) == n_dims
+			assert max(position) <= upper_bound
+			assert min(position) >= lower_bound
+
+	# set up
 	np.random.seed(random_seed)
 
 	options = {'c1':c1, 'c2':c2, 'w':w}

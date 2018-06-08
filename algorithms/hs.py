@@ -100,6 +100,14 @@ class ObjectiveFunction(ObjectiveFunctionInterface):
 
 def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_gens,
 			initial_positions=None, random_seed=12345):
+	# check input
+	if initial_positions is not None:
+		assert len(initial_positions) == n_inds
+		for position in initial_positions:
+			assert len(position) == n_dims
+			assert max(position) <= upper_bound
+			assert min(position) >= lower_bound
+
 	obj_fun = ObjectiveFunction(n_dims=n_dims, obj_func=test_func,
 					lower_bound=lower_bound, upper_bound=upper_bound,
 					n_inds=n_inds, n_gens=n_gens,
