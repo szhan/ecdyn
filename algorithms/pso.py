@@ -22,12 +22,13 @@ def run_global_best_pso(n_dims, test_func, n_inds, n_gens, lower_bound, upper_bo
 	pos_history = optimizer.get_pos_history
 
 	history = list()
+	history.append( {'gen': 0, 'individuals': initial_positions} )	# TODO: better to do it inside pyswarms
 	for g in range(n_gens):
 		solutions = list()
 		#fitnesses = list()	# TODO
 		for i in range(n_inds):
 			solutions.append(pos_history[g][i].tolist())	# convert from np.array to list
-		history.append( {'gen': g, 'individuals': solutions} )
+		history.append( {'gen': g+1, 'individuals': solutions} )
 
 	return history
 
