@@ -47,7 +47,15 @@ def run_es_mu_plus_lambda(n_dims, test_func, lower_bound, upper_bound, n_inds, n
 	This code is modified from DEAP's eaMuPlusLambda() and varOr().
 	"""
 
-	assert (cxpb + mutpb) <= 1.0, ("The sum of the crossover and mutation probabilities must be <= 1.0.")
+	# check input
+	assert (cxpb + mutpb) <= 1.0, "The sum of the crossover and mutation probabilities must be <= 1.0."
+
+	if initial_positions is not None:
+		assert len(initial_positions) == n_inds
+		for position in initial_positions:
+			assert len(position) == n_dims
+			assert max(position) <= upper_bound
+			assert min(position) >= lower_bound
 
 	# set up
 	random.seed(random_seed)
