@@ -131,13 +131,13 @@ def run_harmony_search(n_dims, test_func, lower_bound, upper_bound, n_inds, n_ge
 
 
 if __name__ == '__main__':
-	n_inds = 100
-	n_gens = 10000
+	n_inds = 10
+	n_gens = 1000
 
 	n_dims = 3
-	lower_bound = -5.12
-	upper_bound = 5.12
-	test_func = benchmarks.rastrigin	# from DEAP, which returns a tuple
+	lower_bound = -3.0
+	upper_bound = 3.0
+	test_func = benchmarks.sphere	# from DEAP, which returns a tuple
 
         initial_positions = [[random.uniform(lower_bound, upper_bound) for _ in range(n_dims)] for _ in range(n_inds)]
 	print 'Initial solution: {}'.format(initial_positions)
