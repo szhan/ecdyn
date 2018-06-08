@@ -131,7 +131,7 @@ def run_es_mu_plus_lambda(n_dims, test_func, lower_bound, upper_bound, n_inds, n
 
 	sorted_fitness = sorted(fits)
 	indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
-	individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
+	individuals_sorted_fitness = [pop[indices_sorted_fitness[i]] for i in range(len(indices_sorted_fitness))]
 
 	history.append({'gen':0, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})
 
@@ -149,7 +149,7 @@ def run_es_mu_plus_lambda(n_dims, test_func, lower_bound, upper_bound, n_inds, n
                 # sort individuals by ascending fitness
                 sorted_fitness = sorted(fits)
                 indices_sorted_fitness = sorted(range(len(fits)), key=lambda k: fits[k])
-                individuals_sorted_fitness = itemgetter(*indices_sorted_fitness)(pop)
+                individuals_sorted_fitness = [pop[indices_sorted_fitness[i]] for i in range(len(indices_sorted_fitness))]
 
                 history.append({'gen':g, 'individuals':individuals_sorted_fitness, 'fitness':sorted_fitness})
 
