@@ -115,7 +115,7 @@ def run_es_mu_plus_lambda(n_dims, test_func, lower_bound, upper_bound, n_inds, n
 			pop.append(creator.Individual(initial_positions[i]))
 	else:
 		for i in range(n_inds):
-			random_position = [random.uniform(lower_bound, upper_bound) for _ in range(n_inds)]
+			random_position = [random.uniform(lower_bound, upper_bound) for _ in range(n_dims)]
 			pop.append(creator.Individual(random_position))
 
 	# always randomly generated initial strategies
